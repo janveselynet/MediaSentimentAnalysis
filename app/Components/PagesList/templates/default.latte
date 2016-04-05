@@ -1,34 +1,52 @@
 <table class="table table-striped table-bordered pages-list">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Page ID</th>
+            <th rowspan="2">Name</th>
+            <th colspan="4" class="text-center">Facebook</th>
+            <th colspan="4" class="text-center">Twitter</th>
+            <th rowspan="2" data-orderable="false">&nbsp;</th>
+        </tr>
+        <tr>
             <th>Likes</th>
-            <th>Positive rate</th>
-            <th>Neutral rate</th>
-            <th>Negative rate</th>
-            <th data-orderable="false"></th>
+            <th>Positive</th>
+            <th>Neutral</th>
+            <th>Negative</th>
+            <th>Followers</th>
+            <th>Positive</th>
+            <th>Neutral</th>
+            <th>Negative</th>
         </tr>
     </thead>
     <tbody>
         {foreach $pages as $page}
             <tr>
                 <td>{$page->name}</td>
-                <td>{$page->page_id}</td>
                 <td data-sort="{$page->likes}">
-                    {$page->likes|number:0:',':' '}
+                    {$page->likes|number:0:',':'&nbsp;'|noescape}
                 </td>
-                <td data-sort="{$page->positive}">
-                    {$page->positive * 100|number:2:',':' '}&nbsp;%
+                <td data-sort="{$page->fb_positive}">
+                    {$page->fb_positive * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
                 </td>
-                <td data-sort="{$page->neutral}">
-                    {$page->neutral * 100|number:2:',':' '}&nbsp;%
+                <td data-sort="{$page->fb_neutral}">
+                    {$page->fb_neutral * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
                 </td>
-                <td data-sort="{$page->negative}">
-                    {$page->negative * 100|number:2:',':' '}&nbsp;%
+                <td data-sort="{$page->fb_negative}">
+                    {$page->fb_negative * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
+                </td>
+                <td data-sort="{$page->followers}">
+                    {$page->followers|number:0:',':'&nbsp;'|noescape}
+                </td>
+                <td data-sort="{$page->tw_positive}">
+                    {$page->tw_positive * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
+                </td>
+                <td data-sort="{$page->tw_neutral}">
+                    {$page->tw_neutral * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
+                </td>
+                <td data-sort="{$page->tw_negative}">
+                    {$page->tw_negative * 100|number:0:',':'&nbsp;'|noescape}&nbsp;%
                 </td>
                 <td>
-                    <a n:href="refresh! $page->page_id" class="btn btn-default btn-sm">
+                    <a n:href="refresh! $page->page_id, $page->twitter_id" class="btn btn-default btn-sm">
                         <i class="glyphicon glyphicon-refresh"></i>
                         Refresh
                     </a>

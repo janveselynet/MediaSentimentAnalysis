@@ -17,17 +17,22 @@ class SentimentAnalyzer extends Object
 	/** @var FacebookApi */
 	private $facebookApi;
 
+	/** @var TwitterApi */
+	private $twitterApi;
+
 	/** @var Sentiment */
 	private $sentiment;
 
 
 	/**
 	 * @param FacebookApi $facebookApi
+	 * @param TwitterApi $twitterApi
 	 * @param Sentiment $sentiment
 	 */
-	public function __construct(FacebookApi $facebookApi, Sentiment $sentiment)
+	public function __construct(FacebookApi $facebookApi, TwitterApi $twitterApi, Sentiment $sentiment)
 	{
 		$this->facebookApi = $facebookApi;
+		$this->twitterApi = $twitterApi;
 		$this->sentiment = $sentiment;
 	}
 
@@ -35,20 +40,47 @@ class SentimentAnalyzer extends Object
 	 * @param string $pageId
 	 * @return array
 	 */
-	public function analyze($pageId)
+	public function analyzeFacebook($pageId)
 	{
 		$posts = $this->facebookApi->getPosts($pageId);
-		$postsSentiments = [self::POS => 0, self::NEU => 0, self::NEG => 0];
-		$postsCount = 0;
+		$texts = [];
 		foreach ($posts as $post) { /** @var GraphNode $post */
-			$category = $this->sentiment->categorise($post->getField('message')); /** @var string $category */
-			$postsSentiments[$category]++;
-			$postsCount++;
+			$texts[] = $post->getField('message');
+		}
+		return $this->analyze($texts);
+	}
+
+	/**
+	 * @param string $userId
+	 * @return array
+	 */
+	public function analyzeTwitter($userId)
+	{
+		$tweets = $this->twitterApi->getTweets($userId);
+		$texts = [];
+		foreach ($tweets as $tweet) {
+			$texts[] = $tweet['text'];
+		}
+		return $this->analyze($texts);
+	}
+
+	/**
+	 * @param array $texts
+	 * @return array
+	 */
+	private function analyze(array $texts)
+	{
+		$sentiments = [self::POS => 0, self::NEU => 0, self::NEG => 0];
+		$count = 0;
+		foreach ($texts as $text) {
+			$category = $this->sentiment->categorise($text); /** @var string $category */
+			$sentiments[$category]++;
+			$count++;
 		}
 		foreach ([self::POS, self::NEU, self::NEG] as $category) {
-			$postsSentiments[$category] = $postsSentiments[$category] / $postsCount;
+			$sentiments[$category] = $sentiments[$category] / $count;
 		}
-		return $postsSentiments;
+		return $sentiments;
 	}
 
 }

@@ -1,5 +1,5 @@
 $(function() {
 	$('.pages-list').DataTable({
-		"order": [[3, 'desc']]
+		"order": [[2, 'desc']]
 	});
 });

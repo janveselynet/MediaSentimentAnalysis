@@ -47,6 +47,9 @@ class AddForm extends Control
 		$form->addText('pageId', '')
 			->setAttribute('placeholder', 'Facebook page ID');
 
+		$form->addText('twitterId', '')
+			->setAttribute('placeholder', 'Twitter ID');
+
 		$form->addSubmit('submit', 'Add');
 
 		$form->onSuccess[] = function(Form $form) {
@@ -62,7 +65,7 @@ class AddForm extends Control
 	 */
 	private function handlePageAdd(Form $form)
 	{
-		if ($this->pagesManager->addPage($form->values->pageId)) {
+		if ($this->pagesManager->addPage($form->values->pageId, $form->values->twitterId)) {
 			$this->onPageAdded();
 		}
 		else {

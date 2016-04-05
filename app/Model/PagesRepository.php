@@ -25,47 +25,64 @@ class PagesRepository extends Object
 	/**
 	 * @return Result
 	 */
-	public function findAllOrderByPositiveDesc()
+	public function findAllOrderByFbPositiveDesc()
 	{
-		return $this->connection->query('SELECT * FROM pages ORDER BY positive DESC');
+		return $this->connection->query('SELECT * FROM pages ORDER BY fb_positive DESC');
 	}
 	
 	/**
 	 * @param string $name
 	 * @param string $pageId
 	 * @param int $likes
-	 * @param float $positive
-	 * @param float $neutral
-	 * @param float $negative
+	 * @param float $fbPositive
+	 * @param float $fbNeutral
+	 * @param float $fbNegative
+	 * @param string $twitterId
+	 * @param int $followers
+	 * @param float $twPositive
+	 * @param float $twNeutral
+	 * @param float $twNegative
 	 * @return void
 	 */
-	public function insertPage($name, $pageId, $likes, $positive, $neutral, $negative)
+	public function insertPage($name, $pageId, $likes, $fbPositive, $fbNeutral, $fbNegative, $twitterId, $followers,
+							   $twPositive, $twNeutral, $twNegative)
 	{
 		$this->connection->query('INSERT INTO pages %values', [
 			'name' => $name,
 			'page_id' => $pageId,
 			'likes' => $likes,
-			'positive' => $positive,
-			'neutral' => $neutral,
-			'negative' => $negative,
+			'fb_positive' => $fbPositive,
+			'fb_neutral' => $fbNeutral,
+			'fb_negative' => $fbNegative,
+			'twitter_id' => $twitterId,
+			'followers' => $followers,
+			'tw_positive' => $twPositive,
+			'tw_neutral' => $twNeutral,
+			'tw_negative' => $twNegative,
 		]);
 	}
 
 	/**
 	 * @param string $pageId
 	 * @param int $likes
-	 * @param float $positive
-	 * @param float $neutral
-	 * @param float $negative
+	 * @param float $fbPositive
+	 * @param float $fbNeutral
+	 * @param float $fbNegative
+	 * @param float $twPositive
+	 * @param float $twNeutral
+	 * @param float $twNegative
 	 * @return void
 	 */
-	public function updatePage($pageId, $likes, $positive, $neutral, $negative)
+	public function updatePage($pageId, $likes, $fbPositive, $fbNeutral, $fbNegative, $twPositive, $twNeutral, $twNegative)
 	{
 		$this->connection->query('UPDATE pages SET %set WHERE page_id = %s', [
 			'likes' => $likes,
-			'positive' => $positive,
-			'neutral' => $neutral,
-			'negative' => $negative,
+			'fb_positive' => $fbPositive,
+			'fb_neutral' => $fbNeutral,
+			'fb_negative' => $fbNegative,
+			'tw_positive' => $twPositive,
+			'tw_neutral' => $twNeutral,
+			'tw_negative' => $twNegative,
 		], $pageId);
 	}
 

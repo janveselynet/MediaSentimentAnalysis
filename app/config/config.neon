@@ -8,6 +8,7 @@ services:
 	router: App\RouterFactory::createRouter
 
 	- Model\FacebookApi(%facebook.appId%, %facebook.appSecret%, %facebook.accessToken%)
+	- Model\TwitterApi(%twitter.consumerKey%, %twitter.consumerSecret%, %twitter.accessToken%, %twitter.accessTokenSecret%)
 	- Model\SentimentAnalyzer
 	- Model\PagesRepository
 	- Model\PagesManager

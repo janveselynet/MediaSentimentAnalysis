@@ -41,18 +41,19 @@ class PagesList extends Control
 	 */
 	public function render()
 	{
-		$this->template->pages = $this->pagesRepository->findAllOrderByPositiveDesc();
+		$this->template->pages = $this->pagesRepository->findAllOrderByFbPositiveDesc();
 		$this->template->setFile(__DIR__ . '/templates/default.latte');
 		$this->template->render();
 	}
 
 	/**
 	 * @param string $pageId
+	 * @param string $twitterId
 	 * @return void
 	 */
-	public function handleRefresh($pageId)
+	public function handleRefresh($pageId, $twitterId)
 	{
-		if ($this->pagesManager->updatePage($pageId)) {
+		if ($this->pagesManager->updatePage($pageId, $twitterId)) {
 			$this->onPageRefreshed();
 		}
 		else {
