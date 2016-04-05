@@ -4,6 +4,21 @@
 parameters:
 
 
+services:
+	router: App\RouterFactory::createRouter
+
+	- Model\FacebookApi(%facebook.appId%, %facebook.appSecret%, %facebook.accessToken%)
+	- Model\SentimentAnalyzer
+	- Model\PagesRepository
+	- Model\PagesManager
+
+	- PHPInsight\Sentiment
+	- Nextras\Dbal\Connection(%database%)
+
+	- Components\AddForm\IAddFormFactory
+	- Components\PagesList\IPagesListFactory
+
+
 php:
 	date.timezone: Europe/Prague
 
@@ -16,7 +31,3 @@ application:
 
 session:
 	expiration: 14 days
-
-
-services:
-	router: App\RouterFactory::createRouter
